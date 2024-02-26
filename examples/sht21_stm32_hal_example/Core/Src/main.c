@@ -111,16 +111,16 @@ int main(void)
 
   // Check if there was errors during transmissions
   if (sht21_last_error != HAL_OK)
-	  printf("Error during SHT21 transmit: %d\n\r", sht21_last_error);
+    printf("Error during SHT21 transmit: %d\n\r", sht21_last_error);
 
   /* Run a selftest
    * Turns on the heater element and verifies that the temperature rises and the
    * humidity decreases to verify SHT21 operations.
    */
   if (SHT21_selftest() == SHT21_OK)
-	  printf("Selftest Successful!\n\r");
+    printf("Selftest Successful!\n\r");
   else
-	  printf("Selftest failed!\n\r");
+    printf("Selftest failed!\n\r");
 
   HAL_Delay(5000);
 
@@ -130,32 +130,32 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  // Get the Humidity value
-	  float hum = SHT21_get_humidity();
-	  // Get the temperature value
-      float temp = SHT21_get_temp();
+    // Get the Humidity value
+    float hum = SHT21_get_humidity();
+    // Get the temperature value
+    float temp = SHT21_get_temp();
 
-      // Print the values
-      printf("Humidity: %.2f, Temp: %.02f\n\r", hum, temp);
+    // Print the values
+    printf("Humidity: %.2f, Temp: %.02f\n\r", hum, temp);
 
-      // Get the SHT21 User Register
-      SHT21_User_Reg_TypeDef sht21 = SHT21_get_user_reg();
+    // Get the SHT21 User Register
+    SHT21_User_Reg_TypeDef sht21 = SHT21_get_user_reg();
 
-      /* Example updating user register:
-      sht21.data.chip_heater = 1; 			// Enables the chip heater
-      SHT21_update_user_register(sht21); 	// Updates the register
-       */
+    /* Example updating user register:
+    sht21.data.chip_heater = 1; 			// Enables the chip heater
+    SHT21_update_user_register(sht21); 	// Updates the register
+    */
 
-      // Print the User register
-      printf("Res. Bit1: %d\n\rRes. Bit2: %d\n\rOTP Reload: %d\n\rChip Heater: %d\n\rVoltage Status: %d\n\rError: %d\n\r",
-        sht21.data.resolution_bit1,
-        sht21.data.resolution_bit2,
-        sht21.data.otp_reload,
-        sht21.data.chip_heater,
-        sht21.data.voltage_status,
-		sht21_last_error);
+    // Print the User register
+    printf("Res. Bit1: %d\n\rRes. Bit2: %d\n\rOTP Reload: %d\n\rChip Heater: %d\n\rVoltage Status: %d\n\rError: %d\n\r",
+      sht21.data.resolution_bit1,
+      sht21.data.resolution_bit2,
+      sht21.data.otp_reload,
+      sht21.data.chip_heater,
+      sht21.data.voltage_status,
+      sht21_last_error);
 
-      HAL_Delay(1000);
+    HAL_Delay(1000);
 
     /* USER CODE END WHILE */
 

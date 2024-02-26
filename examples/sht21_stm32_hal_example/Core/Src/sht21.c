@@ -8,19 +8,19 @@ HAL_StatusTypeDef sht21_last_error = HAL_OK;
  *******************************************************************************************/
 static HAL_StatusTypeDef SHT21_transmit_receive(UInt8* rx_buf, UInt8 len, SHT21_Commands_TypeDef cmd)
 {
-	// Create the struct with the passed command
-	SHT21_Request_TypeDef sht21_request = SHT21_Request_Buf(cmd);
+    // Create the struct with the passed command
+    SHT21_Request_TypeDef sht21_request = SHT21_Request_Buf(cmd);
 
-	/*
-	 *  Shifting the address 1 bit to the left and then setting bit 0 to write(0)
-	 *  Address will be 0b10000000 after.
-	 */
-	UInt8 address = (sht21_request.data.address << 1U);
-	address &= ~(0x2U);
+    /*
+     *  Shifting the address 1 bit to the left and then setting bit 0 to write(0)
+     *  Address will be 0b10000000 after.
+     */
+    UInt8 address = (sht21_request.data.address << 1U);
+    address &= ~(0x2U);
 
-	UInt8 tx_buf = sht21_request.data.command;
-	// Transmit the command
-	HAL_StatusTypeDef status = HAL_I2C_Master_Transmit(SHT21_I2C_HANDLE, address, &tx_buf, 1, SHT21_READ_TIMEOUT);
+    UInt8 tx_buf = sht21_request.data.command;
+    // Transmit the command
+    HAL_StatusTypeDef status = HAL_I2C_Master_Transmit(SHT21_I2C_HANDLE, address, &tx_buf, 1, SHT21_READ_TIMEOUT);
 
     // Wait for given time if performing temp or humidity readings
     switch (cmd)
@@ -35,16 +35,16 @@ static HAL_StatusTypeDef SHT21_transmit_receive(UInt8* rx_buf, UInt8 len, SHT21_
         break;
     }
 
-	// Check if transmit was successful
-	if (status != HAL_OK)
-		return status;
+    // Check if transmit was successful
+    if (status != HAL_OK)
+        return status;
 
-	// Setting the read bit, Address will be 0b10000001 after.
-	address |= (1U << 0U);
+    // Setting the read bit, Address will be 0b10000001 after.
+    address |= (1U << 0U);
 
-	status =  HAL_I2C_Master_Receive(SHT21_I2C_HANDLE, address, rx_buf, len, SHT21_READ_TIMEOUT);
+    status =  HAL_I2C_Master_Receive(SHT21_I2C_HANDLE, address, rx_buf, len, SHT21_READ_TIMEOUT);
 
-	return status;
+    return status;
 }
 
 /********************************************************************************************
@@ -85,7 +85,7 @@ SHT21_User_Reg_TypeDef SHT21_get_user_reg(void)
 
     sht21_last_error = SHT21_transmit_receive(rx_buf, 1, SHT21_READ_USER_REG);
     if (sht21_last_error == HAL_OK)
-    	reg = SHT21_Parse_User_Reg(rx_buf);
+        reg = SHT21_Parse_User_Reg(rx_buf);
 
     return reg;
 }
@@ -96,7 +96,7 @@ SHT21_User_Reg_TypeDef SHT21_get_user_reg(void)
 HAL_StatusTypeDef SHT21_update_user_reg(SHT21_User_Reg_TypeDef new_reg)
 {
     SHT21_Request_TypeDef sht21_request = SHT21_Request_Buf(SHT21_WRITE_USER_REG);
- 	
+
     /*
     *  Shifting the address 1 bit to the left and then setting bit 0 to write(0)
     *  Address will be 0b10000000 after.
