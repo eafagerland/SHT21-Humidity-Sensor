@@ -38,18 +38,11 @@ static UInt16 SHT21_Check_Crc(UInt8* buf, UInt8 length, UInt8 checksum)
  *******************************************************************************************/
 SHT21_Request_TypeDef SHT21_Request_Buf(SHT21_Commands_TypeDef cmd)
 {
-    UInt8 read_write_bit = SHT21_I2C_READ_BIT;
-
-    // Set write bit if updating user register
-    if (cmd == SHT21_WRITE_USER_REG)
-        read_write_bit = SHT21_I2C_WRITE_BIT;
-
     // Set address and add the write/read bit
     UInt8 address = SHT21_I2C_ADDRESS;
 
-    SHT21_Request_TypeDef buf;
+    SHT21_Request_TypeDef buf = {0};
     buf.reg |= ((address & 0x7FU) << 9U);       // Set the address
-    buf.reg |= ((read_write_bit & 0x1U) << 8U); // Set the read/write bit
     buf.reg |= (cmd & 0xFFU);                   // Set the command
 
     return buf;
@@ -96,7 +89,7 @@ float SHT21_Parse_RH(UInt8* buf)
  *******************************************************************************************/
 SHT21_User_Reg_TypeDef SHT21_Parse_User_Reg(UInt8* buf)
 {
-    SHT21_User_Reg_TypeDef sht21;
+    SHT21_User_Reg_TypeDef sht21 = {0};
     sht21.reg  |= ((UInt8)buf[0] & SHT21_MEAS_RESOLUTION_BIT1);
     sht21.reg  |= ((UInt8)buf[0] & SHT21_MEAS_RESOLUTION_BIT2);
     sht21.reg  |= ((UInt8)buf[0] & SHT21_ENABLE_CHIP_HEATER);

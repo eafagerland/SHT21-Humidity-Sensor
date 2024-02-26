@@ -179,6 +179,20 @@ SHT21_Error_TypeDef SHT21::transmitReceiveSht21(UInt8* rxBuf, UInt8 len, SHT21_C
   Wire.beginTransmission(sht21_request.data.address);
   Wire.write(sht21_request.data.command);
   Wire.endTransmission();
+
+  // Wait for given time if performing temp or humidity readings
+  switch (cmd)
+  {
+    case SHT21_TEMP_MEASURE_HOLD:
+    delay(90);
+    break;
+    case SHT21_RH_MEASURE_HOLD:
+    delay(40);
+    break;
+    default:
+    break;
+  }
+
   Wire.requestFrom((int)sht21_request.data.address, (int)len);
   status = readSht21(rxBuf, len);
   return status;

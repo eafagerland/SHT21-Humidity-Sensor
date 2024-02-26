@@ -42,5 +42,5 @@ void loop()
 
   Serial.println(serialBuffer);
 
-  delay(10000);
+  delay(1000);
 }
